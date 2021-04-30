@@ -34,25 +34,25 @@ RUN add-apt-repository -y ppa:ondrej/php
 RUN apt-get update
 RUN apt-get --no-install-recommends --no-install-suggests --yes --quiet install \
     php-pear \
-    php7.3 \
-    php7.3-common \
-    php7.3-mbstring \
-    php7.3-dev \
-    php7.3-xml \
-    php7.3-cli \
-    php7.3-mbstring \
-    php7.3-curl \
-    php7.3-gd \
-    php7.3-imagick \
-    php7.3-xdebug \
-    php7.3-xml \
-    php7.3-zip \
-    php7.3-odbc \
-    libapache2-mod-php7.3
+    php7.4 \
+    php7.4-common \
+    php7.4-mbstring \
+    php7.4-dev \
+    php7.4-xml \
+    php7.4-cli \
+    php7.4-mbstring \
+    php7.4-curl \
+    php7.4-gd \
+    php7.4-imagick \
+    php7.4-xdebug \
+    php7.4-xml \
+    php7.4-zip \
+    php7.4-odbc \
+    libapache2-mod-php7.4
 
 RUN pecl install xdebug
-RUN echo "zend_extension=xdebug.so" > /etc/php/7.3/cli/conf.d/20-xdebug.ini
-RUN echo "zend_extension=xdebug.so" > /etc/php/7.3/apache2/conf.d/20-xdebug.ini
+RUN echo "zend_extension=xdebug.so" > /etc/php/7.4/cli/conf.d/20-xdebug.ini
+RUN echo "zend_extension=xdebug.so" > /etc/php/7.4/apache2/conf.d/20-xdebug.ini
 # COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 # INSTALL ODBC DRIVER & TOOLS
@@ -70,12 +70,12 @@ RUN exec bash
 
 # INSTALL & LOAD SQLSRV DRIVER & PDO
 RUN pecl install sqlsrv
-RUN echo ";priority=20\nextension=sqlsrv.so" > /etc/php/7.3/cli/conf.d/20-sqlsrv.ini
-RUN echo ";priority=20\nextension=sqlsrv.so" > /etc/php/7.3/apache2/conf.d/20-sqlsrv.ini
+RUN echo ";priority=20\nextension=sqlsrv.so" > /etc/php/7.4/cli/conf.d/20-sqlsrv.ini
+RUN echo ";priority=20\nextension=sqlsrv.so" > /etc/php/7.4/apache2/conf.d/20-sqlsrv.ini
 
 RUN pecl install pdo_sqlsrv
-RUN echo ";priority=30\nextension=pdo_sqlsrv.so" > /etc/php/7.3/cli/conf.d/30-pdo_sqlsrv.ini
-RUN echo ";priority=30\nextension=pdo_sqlsrv.so" > /etc/php/7.3/apache2/conf.d/30-pdo_sqlsrv.ini
+RUN echo ";priority=30\nextension=pdo_sqlsrv.so" > /etc/php/7.4/cli/conf.d/30-pdo_sqlsrv.ini
+RUN echo ";priority=30\nextension=pdo_sqlsrv.so" > /etc/php/7.4/apache2/conf.d/30-pdo_sqlsrv.ini
 
 # INSTALL COMPOSER
 RUN curl -sS https://getcomposer.org/installer | \
