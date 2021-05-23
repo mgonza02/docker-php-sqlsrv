@@ -1,0 +1,39 @@
+version: "3"
+services:
+  #PHP Service
+
+  php-fpm-sample:
+    image: mgonza02/php-fpm:7.4.18-composer-v1
+    container_name: php-fpm-sample
+    restart: always
+    tty: true
+    # command: composer run-migrations
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      net-php-fph:
+    expose:
+      - 9000
+
+      #Nginx Service
+  php-sample-webserver:
+    image: nginx:alpine
+    container_name: php-sample-webserver
+    restart: always
+    expose:
+      - "80"
+    ports: 
+      - 8001:80
+    volumes:
+      - ./:/var/www
+      - ../nginx/:/etc/nginx/conf.d/
+    networks:
+      net-php-fph:
+    depends_on: 
+        - "php-fpm-sample"
+
+        #Docker Networks
+networks:
+  net-php-fph:
+    name: "net-php-fph" 
