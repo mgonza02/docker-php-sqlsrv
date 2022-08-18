@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.1.6-fpm
 WORKDIR /var/www
 
 # Install dependencies
@@ -50,6 +50,9 @@ RUN apt-get update && apt-get install  --no-install-recommends --no-install-sugg
 
 #composer  
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+#clean
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
