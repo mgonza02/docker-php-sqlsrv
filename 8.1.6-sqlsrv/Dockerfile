@@ -47,13 +47,21 @@ RUN apt-get update && apt-get install  --no-install-recommends --no-install-sugg
 # optional: kerberos library for debian-slim distributions
 RUN apt-get update && apt-get install  --no-install-recommends --no-install-suggests  -y libgssapi-krb5-2
 
+RUN pecl config-set php_ini /etc/php/8.1/fpm/php.ini
+RUN pecl install sqlsrv
+RUN pecl install pdo_sqlsrv 
+RUN echo  "; priority=20\nextension=sqlsrv.so\n" > /usr/local/etc/php/conf.d/sqlsrv.ini
+RUN echo  "; priority=30\nextension=pdo_sqlsrv.so\n" > /usr/local/etc/php/conf.d/pdo_sqlsrv.ini
+
+# For Support MS-SQlServer 2008r2
 
 #composer  
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-#clean
+# Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN sed -i 's/^\(MinProtocol\s*=\s*\).*$/\1TSLv1.0/' /etc/ssl/openssl.cnf 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 CMD ["php-fpm"]
