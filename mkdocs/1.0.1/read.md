@@ -1,0 +1,1 @@
+# mkdocs image contains pdf plugin enabled
