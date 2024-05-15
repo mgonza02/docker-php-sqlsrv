@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  superset-dev-container:
+    build: .
+    ports:
+      - "8080:8088"
+    links:
+      - superset-pro-container
+  superset-pro-container:
+    image: apache/superset
+    ports:
+      - "3000:3050"
+    environment:
+      - SUPERSET_SECRET_KEY=V}^W2Z"'bD'Jy1leFxB.:,d6)U4YTr
