@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  node-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.builder
+      target: builder
+    image: mgonza02/node:24.13.1-alpine-builder
+    container_name: node-builder
+    environment:
+      - NODE_ENV=production
+    volumes:
+      # Mount your app source code
+      - ./app:/app
+      # Persist node_modules to avoid reinstalling on every build
+      - node_modules:/app/node_modules
+      # Mount build output to host
+      - ./build:/app/build
+      # Optional: mount package.json and yarn.lock separately if needed
+      # - ./app/package.json:/app/package.json:ro
+      # - ./app/yarn.lock:/app/yarn.lock:ro
+    working_dir: /app
+    # Keep container running for interactive builds
+    command: sh -c "echo 'Builder ready. Use docker-compose exec node-builder yarn build' && tail -f /dev/null"
+    # Alternative: Run build automatically
+    # command: sh -c "yarn install --frozen-lockfile --production=false && yarn build"
+
+  # Optional: Development service
+  node-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.builder
+      target: builder
+    image: mgonza02/node:24.13.1-alpine-builder
+    container_name: node-dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./app:/app
+      - node_modules_dev:/app/node_modules
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    command: sh -c "yarn install && yarn start"
+
+volumes:
+  node_modules:
+    driver: local
+  node_modules_dev:
+    driver: local
